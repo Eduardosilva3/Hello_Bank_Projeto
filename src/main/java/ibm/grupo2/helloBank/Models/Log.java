@@ -5,6 +5,7 @@ import lombok.Data;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.UUID;
+import ibm.grupo2.helloBank.Models.Account;
 
 @Data
 @Entity
@@ -16,9 +17,13 @@ public class Log {
 
   @Column(nullable = false)
   double value;
-  @Column(nullable = false)
+
+  @ManyToOne
+  @JoinColumn(nullable = false)
   Account src_acc;
-  @Column(nullable = false)
+
+  @ManyToOne
+  @JoinColumn(nullable = false)
   Account dest_acc;
 
   String description;
