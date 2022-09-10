@@ -44,13 +44,14 @@ public class Account {
 
   }
 
-  public Account(Long id, String ag, String type, double balance, boolean active, Customer owner_customer, LocalDateTime created_at, LocalDateTime updated_at) {
+  public Account(Long id, String ag, String number, String type, double balance, boolean active, Customer owner_customer, LocalDateTime created_at, LocalDateTime updated_at) {
     this.id = id;
     this.ag = ag;
+    this.number = number;
     this.type = type;
     this.balance = balance;
     this.active = active;
-    //this.owner_customer = owner_customer;
+    this.owner_customer = owner_customer;
     this.created_at = created_at;
     this.updated_at = updated_at;
   }

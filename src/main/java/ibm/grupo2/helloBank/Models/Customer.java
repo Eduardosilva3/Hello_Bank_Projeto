@@ -36,9 +36,6 @@ public class Customer {
   @Column(nullable = false)
   String password;
 
-//  @OneToMany(mappedBy ="owner_customer")
-//  List<Account> accountList;
-
   @Column(nullable = false)
   LocalDateTime created_at;
 
