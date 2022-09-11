@@ -5,13 +5,15 @@ import lombok.Data;
 import org.hibernate.annotations.Fetch;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Data
 @Entity
-@Table(name = "tb_account")
-public class Account {
+@Table(name = "account")
+public class Account implements Serializable {
+
   @Id
   @GeneratedValue
   Long id;

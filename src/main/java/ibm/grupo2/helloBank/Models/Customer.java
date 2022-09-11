@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.nio.MappedByteBuffer;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -12,8 +13,8 @@ import java.util.UUID;
 
 @Data
 @Entity
-@Table(name = "tb_customer")
-public class Customer {
+@Table(name = "customer")
+public class Customer implements Serializable {
   @Id
   @GeneratedValue
   Long id;
