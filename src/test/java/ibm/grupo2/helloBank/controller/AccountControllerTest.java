@@ -80,11 +80,11 @@ public class AccountControllerTest {
                 .andExpect(jsonPath("$.data.type").value(TYPE))
                 .andExpect(jsonPath("$.data.balance").value(BALANCE))
                 .andExpect(jsonPath("$.data.active").value(ACTIVE));
-//                // Falta mockar um test save de cliente
-//                .andExpect(jsonPath("$.data.owner_customer").value(CUSTOMER))
-//                // A diferença de milisegundos do .now() faz ocorrer erro
-//                .andExpect(jsonPath("$.data.created_at").value(CREATED_AT))
-//                .andExpect(jsonPath("$.data.updated_at").value(UPDATED_AT));
+//              // A diferença na execução em mili segundos faz o LocalDateTime dar erro
+//              .andExpect(jsonPath("$.data.owner_customer").value(CUSTOMER))
+//              // A diferença na execução em mili segundos faz o LocalDateTime dar erro
+//              .andExpect(jsonPath("$.data.created_at").value(CREATED_AT))
+//              .andExpect(jsonPath("$.data.updated_at").value(UPDATED_AT));
     }
 
     public Account getMockAccount(){
