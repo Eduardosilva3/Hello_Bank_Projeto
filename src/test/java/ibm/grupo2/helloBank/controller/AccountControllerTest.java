@@ -28,7 +28,9 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -38,14 +40,16 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 //@ActiveProfiles("test")
 public class AccountControllerTest {
 
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+
     private final Long ID = 1L;
     private final String AG = "AgencyTest";
     private final String NUMBER = "NumberTest";
     private final String TYPE = "TypeTest";
     private final boolean ACTIVE = Boolean.TRUE;
     private final double BALANCE = 100.00;
-    private final LocalDateTime CREATED_AT = LocalDateTime.now().minusDays(2);
-    private final LocalDateTime UPDATED_AT = LocalDateTime.now();
+    private final LocalDateTime CREATED_AT = LocalDateTime.parse("2000-01-01 12:30", formatter);
+    private final LocalDateTime UPDATED_AT = LocalDateTime.parse("2000-01-05 12:00", formatter);
 
 
     private final Customer CUSTOMER = new Customer(1000L,"Ryan","00000000","test@email.com"
@@ -67,10 +71,10 @@ public class AccountControllerTest {
 
         BDDMockito.given(accountService.save(Mockito.any(Account.class))).willReturn(getMockAccount());
 
-        System.out.println( jsonPath("$.id").toString() );
+        System.out.println( jsonPath("$.data").toString() );
 
         mvc.perform(MockMvcRequestBuilders.post("/account").
-                        content(getJsonPayload(ID,AG,NUMBER,TYPE,BALANCE,ACTIVE,CUSTOMER,CREATED_AT,UPDATED_AT))
+                        content(getJsonPayload(ID,AG,NUMBER,TYPE,BALANCE,ACTIVE,CREATED_AT,UPDATED_AT))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated())
@@ -79,12 +83,9 @@ public class AccountControllerTest {
                 .andExpect(jsonPath("$.data.number").value(NUMBER))
                 .andExpect(jsonPath("$.data.type").value(TYPE))
                 .andExpect(jsonPath("$.data.balance").value(BALANCE))
-                .andExpect(jsonPath("$.data.active").value(ACTIVE));
-//              // A diferença na execução em mili segundos faz o LocalDateTime dar erro
-//              .andExpect(jsonPath("$.data.owner_customer").value(CUSTOMER))
-//              // A diferença na execução em mili segundos faz o LocalDateTime dar erro
-//              .andExpect(jsonPath("$.data.created_at").value(CREATED_AT))
-//              .andExpect(jsonPath("$.data.updated_at").value(UPDATED_AT));
+                .andExpect(jsonPath("$.data.active").value(ACTIVE))
+              .andExpect(jsonPath("$.data.created_at").value(CREATED_AT.format(formatter)))
+              .andExpect(jsonPath("$.data.updated_at").value(UPDATED_AT.format(formatter)));
     }
 
     public Account getMockAccount(){
@@ -104,11 +105,10 @@ public class AccountControllerTest {
 
     public String getJsonPayload(Long id,
                                  String ag, String number, String type,
-                                 double balance, boolean active,
-                                 Customer customer, LocalDateTime created_at,
+                                 double balance, boolean active, LocalDateTime created_at,
                                  LocalDateTime updated_at) throws JsonProcessingException {
 
-        AccountDto accountDto = new AccountDto(id, ag, number,type, balance, active, customer,
+        AccountDto accountDto = new AccountDto(id, ag, number,type, balance, active, CUSTOMER,
                 created_at, updated_at);
         //accountDto = modelMapper.map(getMockAccount(), accountDto.getClass());
         ObjectMapper mapper = new ObjectMapper();
