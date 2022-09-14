@@ -18,6 +18,15 @@ public class CustomerServiceImpl implements CustomerService {
 
 
     @Override
+    public List<Optional<Customer>> findByAllByName(String name) {
+        try {
+            return customerRepository.findAllByName(name);
+        }catch (EntityNotFoundException e) {
+            throw new EntityNotFoundException(e.getMessage());
+        }
+    }
+
+    @Override
     public Optional<Customer> findById(Long id) {
         try {
             return customerRepository.findById(id);
@@ -67,6 +76,5 @@ public class CustomerServiceImpl implements CustomerService {
         }catch (EntityNotFoundException e){
             throw new EntityNotFoundException(e.getMessage());
         }
-
     }
 }

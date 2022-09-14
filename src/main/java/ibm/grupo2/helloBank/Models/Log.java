@@ -33,4 +33,5 @@ public class Log {
 
   @Column(nullable = false)
   LocalDateTime created_at;
+
 }

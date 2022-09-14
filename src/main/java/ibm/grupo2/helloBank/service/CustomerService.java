@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Optional;
 
 public interface CustomerService {
+    List<Optional<Customer>> findByAllByName(String name);
+
     Optional<Customer> findById(Long id);
     List<Customer> findAll();
     Customer create(Customer customer);

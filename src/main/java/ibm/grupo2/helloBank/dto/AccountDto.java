@@ -19,22 +19,22 @@ public class AccountDto {
     @GeneratedValue
     Long id;
 
-    @NotNull(message = "Informe a agência.")
+    @NotNull(message = "Inform the agency.")
     String ag;
 
-    @NotNull(message = "Informe a conta.")
+    @NotNull(message = "Inform the account number")
     String number;
 
 
-    @NotNull(message = "Insira se é conta poupança ou corrente")
+    @NotNull(message = "Inform the account type.")
     String type;
 
     double balance = 0;
 
-    @NotNull(message = "Se a conta está ativa ou não. (true / false)")
+    @NotNull(message = "This account is active? (true / false)")
     boolean active = true;
 
-    @NotNull(message = "Informe qual cliente está vinculado a esta conta.")
+    @NotNull(message = "Who is the customer? ")
     Customer owner_customer;
 
     @Column(nullable = false)
