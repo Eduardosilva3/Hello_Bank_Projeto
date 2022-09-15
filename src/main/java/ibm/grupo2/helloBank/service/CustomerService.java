@@ -14,4 +14,6 @@ public interface CustomerService {
     Customer create(Customer customer);
     Customer update(Long id, CustomerDto CustomerDto);
     void delete(Long id);
+
+    Customer findByCpf(String cpf);
 }

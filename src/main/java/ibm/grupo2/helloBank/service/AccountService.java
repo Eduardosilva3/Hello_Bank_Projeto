@@ -24,6 +24,8 @@ public interface AccountService {
 
     // Métodos de transação  transfer / withdraw / deposit
 
+    Account updateForTransfers(Long id, Account accountDDto);
+
     Account transfer(String origin, String destiny, double value);
 
     Account withdraw(String origin, double value);

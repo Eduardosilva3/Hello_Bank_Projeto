@@ -1,5 +1,6 @@
 package ibm.grupo2.helloBank.service.impl;
 
+import ibm.grupo2.helloBank.Controller.CustomerController;
 import ibm.grupo2.helloBank.Models.Customer;
 import ibm.grupo2.helloBank.Repositories.CustomerRepository;
 import ibm.grupo2.helloBank.dto.CustomerDto;
@@ -63,7 +64,7 @@ public class CustomerServiceImpl implements CustomerService {
         c1.get().setUpdated_at(LocalDateTime.now());
 
         System.out.println("This customer was updated with success!");
-
+        customerRepository.deleteById(c1.get().getId());
         return customerRepository.save(c1.get());
     }
 
@@ -76,5 +77,10 @@ public class CustomerServiceImpl implements CustomerService {
         }catch (EntityNotFoundException e){
             throw new EntityNotFoundException(e.getMessage());
         }
+    }
+
+    @Override
+    public Customer findByCpf(String cpf) {
+        return customerRepository.findByCpf(cpf);
     }
 }

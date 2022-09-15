@@ -15,7 +15,9 @@ import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -128,6 +130,79 @@ public class AccountController {
         return ResponseEntity.ok().body(response);
     }
 
+    //transferêcia
+    @PutMapping
+    public ResponseEntity<List<Response<Account>>> transfer(@Valid @RequestBody String origin, @RequestBody String destiny,
+                                                         @RequestBody double value ,BindingResult result) {
+        Response<Account> response1 = new Response<>();
+        Response<Account> response2 = new Response<>();
+
+        List<Response<Account>> responseList = new ArrayList<>();
+
+        Optional<Account> acc1 = accountService.findByNumber(origin);
+        Optional<Account> acc2 = accountService.findByNumber(destiny);
+
+
+        if (!acc1.isPresent() && !acc2.isPresent()) {
+            result.addError(new ObjectError("Account", "Account not found."));
+        }
+        if (result.hasErrors()) {
+            result.getAllErrors().forEach(r -> response1.getErrors().add(r.getDefaultMessage()));
+
+            responseList.add(response1);
+            return ResponseEntity.badRequest().body(responseList);
+        }
+
+        accountService.transfer(origin,destiny,value);
+        responseList.addAll(Arrays.asList(response1,response2));
+        System.out.println("Transfer completed!");
+        return ResponseEntity.ok().body(responseList);
+    }
+
+
+    @PutMapping
+    public ResponseEntity<Response<Account>> withdraw(@Valid @RequestBody String origin,
+                                                      @RequestBody double value ,BindingResult result) {
+        Response<Account> response = new Response<Account>();
+
+        Optional<Account> acc1 = accountService.findByNumber(origin);
+
+        if (!acc1.isPresent()) {
+            result.addError(new ObjectError("Account", "Account not found."));
+        }
+        if (result.hasErrors()) {
+            result.getAllErrors().forEach(r -> response.getErrors().add(r.getDefaultMessage()));
+
+            return ResponseEntity.badRequest().body(response);
+        }
+
+        Account accFinal = accountService.withdraw(origin,value);
+        response.setData(accFinal);
+        System.out.println("Withdraw completed! Your total balance is: $ " +accFinal.getBalance() + "." );
+        return ResponseEntity.ok().body(response);
+    }
+
+    @PutMapping
+    public ResponseEntity<Response<Account>> deposit(@Valid @RequestBody String origin,
+                                                     @RequestBody double value ,BindingResult result) {
+        Response<Account> response = new Response<Account>();
+
+        Optional<Account> acc1 = accountService.findByNumber(origin);
+
+        if (!acc1.isPresent()) {
+            result.addError(new ObjectError("Account", "Account not found."));
+        }
+        if (result.hasErrors()) {
+            result.getAllErrors().forEach(r -> response.getErrors().add(r.getDefaultMessage()));
+
+            return ResponseEntity.badRequest().body(response);
+        }
+
+        Account accFinal = accountService.deposit(origin,value);
+        response.setData(accFinal);
+        System.out.println("Deposit completed! Your total balance is: $ " +accFinal.getBalance() + "." );
+        return ResponseEntity.ok().body(response);
+    }
 
 }
 
