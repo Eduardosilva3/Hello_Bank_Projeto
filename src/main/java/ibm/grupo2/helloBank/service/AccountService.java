@@ -22,7 +22,7 @@ public interface AccountService {
 
     Account update(Long id, AccountDto accountDto);
 
-    // Métodos de transação  transfer / withdraw / deposit
+    //Transfer Methods | transfer / withdraw / deposit
 
     Account updateForTransfers(Long id, Account accountDDto);
 

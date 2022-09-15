@@ -1,7 +1,9 @@
 package ibm.grupo2.helloBank.service.impl;
 
 import ibm.grupo2.helloBank.Models.Account;
+import ibm.grupo2.helloBank.Models.Log;
 import ibm.grupo2.helloBank.Repositories.AccountRepository;
+import ibm.grupo2.helloBank.Repositories.LogRepository;
 import ibm.grupo2.helloBank.dto.AccountDto;
 import ibm.grupo2.helloBank.exception.ObjectNotFoundException;
 import ibm.grupo2.helloBank.exception.UnsufficientBalanceException;
@@ -20,6 +22,9 @@ public class AccountServiceImpl implements AccountService {
 
     @Autowired
     AccountRepository accountRepository;
+
+    @Autowired
+    LogServiceImpl logService;
 
 
     @Override
