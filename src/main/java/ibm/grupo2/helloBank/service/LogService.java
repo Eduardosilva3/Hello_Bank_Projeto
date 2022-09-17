@@ -13,6 +13,6 @@ public interface LogService {
     Log generate(Account acc,Account destiny ,Customer customer);
     Log save(Log log);
 
-
-    Page<Log> findBetweenDates(String number, Date date1, Date date2, int page);
+//
+    List<Log> findBetweenDates(String number, Date date1, Date date2);
 }

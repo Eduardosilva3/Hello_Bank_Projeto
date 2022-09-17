@@ -25,6 +25,6 @@ public class Log {
   double value;
 
   @Column(nullable = false)
-  private Date created_at = new Date();
+  private Date date = new Date();
 
 }

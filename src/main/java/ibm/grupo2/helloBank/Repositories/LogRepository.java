@@ -1,14 +1,9 @@
 package ibm.grupo2.helloBank.Repositories;
 
 import ibm.grupo2.helloBank.Models.Log;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import java.time.LocalDate;
-import java.time.chrono.ChronoLocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -39,5 +34,5 @@ public interface LogRepository extends JpaRepository<Log, Long> {
 //        }
 //    }
 
-    Page<Log> findByOriginAndDateGreaterThanEqualAndDateLessThanEqual(String number, Date date1, Date date2, PageRequest pg);
+   List<Log> findAllByOriginAndDateGreaterThanEqualAndDateLessThanEqual(String number, Date date1, Date date2);
 }

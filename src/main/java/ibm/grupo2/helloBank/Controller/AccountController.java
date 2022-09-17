@@ -106,7 +106,7 @@ public class AccountController {
     }
 
     @DeleteMapping(value = "/{number}")
-    public ResponseEntity<Response<String>> delete(@PathVariable("number") String number) {
+    public ResponseEntity<Response<String>> deleteNumber(@PathVariable("number") String number) {
         Response<String> response = new Response<String>();
 
         Optional<Account> acc = accountService.findByNumber(number);
@@ -152,10 +152,10 @@ public class AccountController {
         return ResponseEntity.ok().body(response);
     }
 
-    //transferêcia
-    @PutMapping
-    public ResponseEntity<List<Response<Account>>> transfer(@Valid @RequestBody String origin, @RequestBody String destiny,
-                                                            @RequestBody double value, BindingResult result) {
+//    //transferêcia
+    @PutMapping(value = "/transfer/{origin}")
+    public ResponseEntity<List<Response<Account>>> transfer(@Valid @PathVariable ("origin") String origin,  String destiny,
+                                                             double value, BindingResult result) {
         Response<Account> response1 = new Response<>();
         Response<Account> response2 = new Response<>();
 
@@ -187,9 +187,9 @@ public class AccountController {
     }
 
 
-    @PutMapping
-    public ResponseEntity<Response<Account>> withdraw(@Valid @RequestBody String origin,
-                                                      @RequestBody double value, BindingResult result) {
+    @PutMapping(value = "/withdraw/{origin}")
+    public ResponseEntity<Response<Account>> withdraw(@PathVariable ("origin") String origin,
+                                                       double value, BindingResult result) {
         Response<Account> response = new Response<Account>();
 
         Optional<Account> acc1 = accountService.findByNumber(origin);
@@ -214,9 +214,9 @@ public class AccountController {
         return ResponseEntity.ok().body(response);
     }
 
-    @PutMapping
-    public ResponseEntity<Response<Account>> deposit(@Valid @RequestBody String origin,
-                                                     @RequestBody double value, BindingResult result) {
+    @PutMapping(value = "/deposit/{origin}")
+    public ResponseEntity<Response<Account>> deposit(@PathVariable ("origin") String origin,
+                                                      double value, BindingResult result) {
         Response<Account> response = new Response<Account>();
 
         Optional<Account> acc1 = accountService.findByNumber(origin);

@@ -6,12 +6,14 @@ import ibm.grupo2.helloBank.Repositories.CustomerRepository;
 import ibm.grupo2.helloBank.dto.CustomerDto;
 import ibm.grupo2.helloBank.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
+@Service
 public class CustomerServiceImpl implements CustomerService {
 
     @Autowired
