@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -24,13 +25,12 @@ public class LogController {
     @Autowired
     AccountService accountService;
 
-    @GetMapping(value = "/{number}")
-    public ResponseEntity<Response<Page<Log>>> findBetweenDates(@PathVariable("number") String number,
+    @GetMapping(value = "/log/{number}")
+    public ResponseEntity<Response<List<Log>>> findBetweenDates(@PathVariable("number") String number,
                                                                 @RequestParam("startDate") @DateTimeFormat(pattern = "dd-MM-yyyy") Date startDate,
-                                                                @RequestParam("endDate") @DateTimeFormat(pattern = "dd-MM-yyyy") Date endDate,
-                                                                @RequestParam(name = "page", defaultValue = "0") int page) {
+                                                                @RequestParam("endDate") @DateTimeFormat(pattern = "dd-MM-yyyy") Date endDate) {
 
-        Response<Page<Log>> response = new Response<Page<Log>>();
+        Response<List<Log>> response = new Response<>();
         Optional<Account> acc = accountService.findByNumber(number);
 
         if (!acc.isPresent()) {
@@ -38,9 +38,8 @@ public class LogController {
             return ResponseEntity.badRequest().body(response);
         }
 
-        Page<Log> logs = logService.findBetweenDates(number, startDate, endDate, page);
+        List<Log> logs = logService.findBetweenDates(number, startDate, endDate);
         response.setData(logs);
         return ResponseEntity.ok().body(response);
     }
-
 }

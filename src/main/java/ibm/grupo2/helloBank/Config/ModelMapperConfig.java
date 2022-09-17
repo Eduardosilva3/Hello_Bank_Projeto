@@ -1,13 +1,14 @@
 package ibm.grupo2.helloBank.Config;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class ModelMapper {
+public class ModelMapperConfig {
 
     @Bean
-    public ModelMapper mapper(){
+    public ModelMapper modelMapper() {
         return new ModelMapper();
     }
 }
