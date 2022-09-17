@@ -37,7 +37,7 @@ public class AWSSNSController {
    * @return retorna mensagem confirmando o envio do email
    * 
    */
-  @PostMapping("/addSubscription")
+  
   public String addSubscriptionToSNSTopic(@RequestBody String email) {
     SubscribeRequest subscribeRequest = new SubscribeRequest(TOPIC_ARN, "email", email);
     amazonSNSClient.subscribe(subscribeRequest);
@@ -54,10 +54,9 @@ public class AWSSNSController {
    * @return retorna mensagem confirmando o envio do sms
    * 
    */
-  @GetMapping("/sms")
+  
   public String pubTextSMS(String message, String phoneNumber) {
-      message = "teste 2";
-      phoneNumber = "+5581973207681";
+      
 	  
 	  try {
           PublishRequest request = new PublishRequest();
@@ -82,24 +81,26 @@ public class AWSSNSController {
    * @return retorna mensagem confirmando o cadastro do numero
    * 
    */
-  @GetMapping("/csms")
-  public  void subTextSNS(String topicArn, String phoneNumber) {
-	  topicArn = TOPIC_ARN;
-	  phoneNumber = "+5581973207681";
+  
+  public String subTextSNS(String phoneNumber) {
+	
+	  
       try {
           SubscribeRequest request = new SubscribeRequest();
               request.setProtocol("sms");
               request.setEndpoint(phoneNumber);
               request.setReturnSubscriptionArn(true);
-              request.setTopicArn(topicArn);
+              request.setTopicArn(TOPIC_ARN);
         		  
         		 
           SubscribeResult result = amazonSNSClient.subscribe(request);
-          System.out.println("Subscription ARN: " + result.getSubscriptionArn() + "\n\n Status is " + result.getSdkHttpMetadata());
+         // System.out.println("Subscription ARN: " + result.getSubscriptionArn() + "\n\n Status is " + result.getSdkHttpMetadata());
+         return "Celular cadastrado com sucesso" + result.getSubscriptionArn();
 
       } catch (AmazonSNSException e) {
           System.err.println(e);
           System.exit(1);
+          return "Erro" + e;
       }
   }
 
