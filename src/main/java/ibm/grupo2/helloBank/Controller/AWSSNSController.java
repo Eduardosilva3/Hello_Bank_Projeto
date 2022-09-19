@@ -39,7 +39,7 @@ static
    * 
    */
   
-  public static void addSubscriptionToSNSTopic(@RequestBody String email) {
+  public static void addSubscriptionToSNSTopic(String email) {
     SubscribeRequest subscribeRequest = new SubscribeRequest(TOPIC_ARN, "email", email);
     amazonSNSClient.subscribe(subscribeRequest);
     //return "Subscription request is pending. To confirm the subscription please check your email :"
