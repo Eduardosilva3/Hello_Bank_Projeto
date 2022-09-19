@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class AWSSNSController {
 
-  private final static String TOPIC_ARN = "arn:aws:sns:us-east-1:296961575577:HelloBank";
+  private final static String TOPIC_ARN = "arn:aws:sns:us-east-1:296961575577:spring";
 
   @Autowired
 
