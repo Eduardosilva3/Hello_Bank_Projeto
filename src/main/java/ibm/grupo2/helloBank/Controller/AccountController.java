@@ -7,6 +7,7 @@ import ibm.grupo2.helloBank.Response.Response;
 import ibm.grupo2.helloBank.dto.AccountDto;
 import ibm.grupo2.helloBank.service.AccountService;
 import ibm.grupo2.helloBank.service.LogService;
+import io.swagger.annotations.Api;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,6 +22,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
+@Api(value = "animal")
 @RestController
 @RequestMapping(value = "account")
 public class AccountController {

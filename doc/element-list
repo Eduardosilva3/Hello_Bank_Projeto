@@ -1,0 +1,12 @@
+ibm.grupo2.helloBank
+ibm.grupo2.helloBank.Config
+ibm.grupo2.helloBank.controller
+ibm.grupo2.helloBank.Controller
+ibm.grupo2.helloBank.dto
+ibm.grupo2.helloBank.exception
+ibm.grupo2.helloBank.Models
+ibm.grupo2.helloBank.Repositories
+ibm.grupo2.helloBank.repository
+ibm.grupo2.helloBank.Response
+ibm.grupo2.helloBank.service
+ibm.grupo2.helloBank.service.impl
