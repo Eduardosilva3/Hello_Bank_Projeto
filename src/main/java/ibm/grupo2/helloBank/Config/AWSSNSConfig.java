@@ -13,17 +13,17 @@ import org.springframework.context.annotation.Primary;
 public class AWSSNSConfig {
 
   @Value("${cloud.aws.region.static}")
-  private static String region;
+  private String region;
 
   @Value("${cloud.aws.credentials.access-key}")
-  private static String awsAccessKey;
+  private String awsAccessKey;
 
   @Value("${cloud.aws.credentials.secret-key}")
-  private static String awsSecretKey;
+  private String awsSecretKey;
 
     @Primary
     @Bean
-    public static AmazonSNSClient getAWSSNSClient() {
+    public AmazonSNSClient getAWSSNSClient() {
         return (AmazonSNSClient) AmazonSNSClientBuilder.standard()
                 .withRegion(region)
                 .withCredentials(

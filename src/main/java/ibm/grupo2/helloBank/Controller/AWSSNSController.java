@@ -43,9 +43,10 @@ public class AWSSNSController {
   
   
   public void addSubscriptionToSNSTopic(String email) {
-    AWSSNSConfig.getAWSSNSClient();
+    AmazonSNSClient amazonSNSc = new AmazonSNSClient();
+    
     SubscribeRequest subscribeRequest = new SubscribeRequest("arn:aws:sns:us-east-1:296961575577:HelloBank", "email", email);
-    amazonSNSClient.subscribe(subscribeRequest);
+    amazonSNSc.subscribe(subscribeRequest);
     //return "Subscription request is pending. To confirm the subscription please check your email :"
       //  + email;
   }
