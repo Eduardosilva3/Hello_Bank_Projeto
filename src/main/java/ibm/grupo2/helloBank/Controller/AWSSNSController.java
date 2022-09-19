@@ -62,7 +62,7 @@ public class AWSSNSController {
    */
   
   public String pubTextSMS(String message, String phoneNumber) {
-      
+    AmazonSNSClient amazonSNSc = new AmazonSNSClient();
 	  
 	  try {
           PublishRequest request = new PublishRequest();
@@ -70,7 +70,7 @@ public class AWSSNSController {
           request.setPhoneNumber(phoneNumber);
           
 
-          PublishResult result = amazonSNSClient.publish(request);
+          PublishResult result = amazonSNSc.publish(request);
           return result.getMessageId() + " Message sent. Status was " + result.getSdkResponseMetadata();
 
       } catch (AmazonSNSException e) {
@@ -89,7 +89,7 @@ public class AWSSNSController {
    */
   
   public void subTextSNS(String phoneNumber) {
-	
+    AmazonSNSClient amazonSNSc = new AmazonSNSClient();
 	  
       try {
           SubscribeRequest request = new SubscribeRequest();
@@ -99,7 +99,7 @@ public class AWSSNSController {
               request.setTopicArn(TOPIC_ARN);
         		  
         		 
-          SubscribeResult result = amazonSNSClient.subscribe(request);
+          SubscribeResult result = amazonSNSc.subscribe(request);
          // System.out.println("Subscription ARN: " + result.getSubscriptionArn() + "\n\n Status is " + result.getSdkHttpMetadata());
          //return "Celular cadastrado com sucesso" + result.getSubscriptionArn();
 
