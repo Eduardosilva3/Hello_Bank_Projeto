@@ -22,12 +22,12 @@ import org.springframework.web.bind.annotation.RestController;
  * @author Eduardo Silva
  * @since 15/09/2022
  */
-@RestController
+
 public class AWSSNSController {
 
   private final static String TOPIC_ARN = "arn:aws:sns:us-east-1:296961575577:HelloBank";
 
-  @Autowired
+ 
 
   AmazonSNSClient amazonSNSClient;
 
@@ -39,7 +39,7 @@ public class AWSSNSController {
    * 
    */
   
-  @GetMapping("/email")
+  
   public void addSubscriptionToSNSTopic(String email) {
     
     SubscribeRequest subscribeRequest = new SubscribeRequest(TOPIC_ARN, "email", email);
