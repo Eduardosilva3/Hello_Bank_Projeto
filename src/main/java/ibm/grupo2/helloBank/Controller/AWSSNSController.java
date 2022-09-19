@@ -8,6 +8,8 @@ import com.amazonaws.services.sns.model.PublishResult;
 import com.amazonaws.services.sns.model.SubscribeRequest;
 import com.amazonaws.services.sns.model.SubscribeResult;
 
+import ibm.grupo2.helloBank.Config.AWSSNSConfig;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -29,7 +31,7 @@ public class AWSSNSController {
 
  
 
-  AmazonSNSClient amazonSNSClient;
+    public AmazonSNSClient amazonSNSClient;
 
 
   /**
@@ -41,7 +43,7 @@ public class AWSSNSController {
   
   
   public void addSubscriptionToSNSTopic(String email) {
-    
+    AWSSNSConfig.getAWSSNSClient();
     SubscribeRequest subscribeRequest = new SubscribeRequest("arn:aws:sns:us-east-1:296961575577:HelloBank", "email", email);
     amazonSNSClient.subscribe(subscribeRequest);
     //return "Subscription request is pending. To confirm the subscription please check your email :"
