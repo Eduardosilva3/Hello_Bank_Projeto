@@ -28,7 +28,7 @@ public class AWSSNSController {
   private final static String TOPIC_ARN = "arn:aws:sns:us-east-1:296961575577:HelloBank";
 
   @Autowired
-static
+
   AmazonSNSClient amazonSNSClient;
 
 
@@ -39,7 +39,7 @@ static
    * 
    */
   
-  public static void addSubscriptionToSNSTopic(String email) {
+  public void addSubscriptionToSNSTopic(String email) {
     SubscribeRequest subscribeRequest = new SubscribeRequest(TOPIC_ARN, "email", email);
     amazonSNSClient.subscribe(subscribeRequest);
     //return "Subscription request is pending. To confirm the subscription please check your email :"
@@ -83,7 +83,7 @@ static
    * 
    */
   
-  public static void subTextSNS(String phoneNumber) {
+  public void subTextSNS(String phoneNumber) {
 	
 	  
       try {
