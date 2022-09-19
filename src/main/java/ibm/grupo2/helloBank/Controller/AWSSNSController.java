@@ -41,7 +41,7 @@ public class AWSSNSController {
   
   @GetMapping("/email")
   public void addSubscriptionToSNSTopic(String email) {
-    email = "teste.teste@teste.com";
+    
     SubscribeRequest subscribeRequest = new SubscribeRequest(TOPIC_ARN, "email", email);
     amazonSNSClient.subscribe(subscribeRequest);
     //return "Subscription request is pending. To confirm the subscription please check your email :"
