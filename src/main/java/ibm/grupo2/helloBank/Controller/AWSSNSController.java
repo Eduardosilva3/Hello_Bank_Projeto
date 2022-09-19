@@ -25,9 +25,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class AWSSNSController {
 
-  private final static String TOPIC_ARN = "arn:aws:sns:us-east-1:296961575577:spring";
+  private final static String TOPIC_ARN = "arn:aws:sns:us-east-1:296961575577:HelloBank";
 
   @Autowired
+static
   AmazonSNSClient amazonSNSClient;
 
 
@@ -38,11 +39,11 @@ public class AWSSNSController {
    * 
    */
   
-  public String addSubscriptionToSNSTopic(@RequestBody String email) {
+  public static void addSubscriptionToSNSTopic(@RequestBody String email) {
     SubscribeRequest subscribeRequest = new SubscribeRequest(TOPIC_ARN, "email", email);
     amazonSNSClient.subscribe(subscribeRequest);
-    return "Subscription request is pending. To confirm the subscription please check your email :"
-        + email;
+    //return "Subscription request is pending. To confirm the subscription please check your email :"
+      //  + email;
   }
   
   
@@ -82,7 +83,7 @@ public class AWSSNSController {
    * 
    */
   
-  public String subTextSNS(String phoneNumber) {
+  public static void subTextSNS(String phoneNumber) {
 	
 	  
       try {
@@ -95,12 +96,12 @@ public class AWSSNSController {
         		 
           SubscribeResult result = amazonSNSClient.subscribe(request);
          // System.out.println("Subscription ARN: " + result.getSubscriptionArn() + "\n\n Status is " + result.getSdkHttpMetadata());
-         return "Celular cadastrado com sucesso" + result.getSubscriptionArn();
+         //return "Celular cadastrado com sucesso" + result.getSubscriptionArn();
 
       } catch (AmazonSNSException e) {
           System.err.println(e);
           System.exit(1);
-          return "Erro" + e;
+          //return "Erro" + e;
       }
   }
 

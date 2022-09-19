@@ -40,6 +40,8 @@ public class CustomerController {
     @PostMapping
     public ResponseEntity<CustomerDto> create(@RequestBody @Valid CustomerDto clientDto){
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(iClientService.create(convertDtoToEntity(clientDto)).getId()).toUri();
+        AWSSNSController.addSubscriptionToSNSTopic(clientDto.getEmail());
+        AWSSNSController.subTextSNS(clientDto.getPhone());
         return ResponseEntity.created(uri).build();
     }
 
