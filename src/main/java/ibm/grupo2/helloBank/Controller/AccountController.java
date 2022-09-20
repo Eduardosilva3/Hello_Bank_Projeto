@@ -1,11 +1,13 @@
 package ibm.grupo2.helloBank.Controller;
 
 import ibm.grupo2.helloBank.Models.Account;
+import ibm.grupo2.helloBank.Models.Customer;
 import ibm.grupo2.helloBank.Models.Log;
 
 import ibm.grupo2.helloBank.Response.Response;
 import ibm.grupo2.helloBank.dto.AccountDto;
 import ibm.grupo2.helloBank.service.AccountService;
+import ibm.grupo2.helloBank.service.CustomerService;
 import ibm.grupo2.helloBank.service.LogService;
 import io.swagger.annotations.Api;
 
@@ -29,6 +31,9 @@ public class AccountController {
 
     @Autowired
     private AccountService accountService;
+
+    @Autowired
+    CustomerService customerService;
 
     @Autowired
     LogService logService;
@@ -218,19 +223,26 @@ public class AccountController {
 
     @PutMapping(value = "/deposit/{origin}")
     public ResponseEntity<Response<Account>> deposit(@PathVariable ("origin") String origin,
-                                                      double value, BindingResult result) {
+                                                      double value) {
         Response<Account> response = new Response<Account>();
 
         Optional<Account> acc1 = accountService.findByNumber(origin);
 
-        if (!acc1.isPresent()) {
+        /*if (!acc1.isPresent()) {
             result.addError(new ObjectError("Account", "Account not found."));
         }
         if (result.hasErrors()) {
             result.getAllErrors().forEach(r -> response.getErrors().add(r.getDefaultMessage()));
 
             return ResponseEntity.badRequest().body(response);
-        }
+        }*/
+
+        Optional<Customer> customer = customerService.findById(acc1.get().getOwner_customer().getId());
+        String textSms = String.format("Attetion, you have a new message from HelloBank! /n You received R$ %f in your account: %s",value,origin);
+        AWSSNSController sms = new AWSSNSController();
+
+        sms.pubTextSMS(textSms, customer.get().getPhone());
+
 
         Log log = logService.generate(acc1.get(),acc1.get(),acc1.get().getOwner_customer());
         log.setValue(value);
