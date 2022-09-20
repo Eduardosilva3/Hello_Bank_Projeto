@@ -7,6 +7,8 @@ import ibm.grupo2.helloBank.dto.LoginDto;
 import ibm.grupo2.helloBank.service.CustomerService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -25,8 +27,10 @@ import java.util.*;
 @Log4j2
 public class CustomerController {
 
-
+    @Autowired
     private final CustomerService customerService;
+
+    @Autowired
     private final PasswordEncoder passwordEncoder;
 
     @PostMapping("/login")
@@ -49,7 +53,7 @@ public class CustomerController {
     @PostMapping
     public ResponseEntity<CustomerDto> create(@RequestBody @Valid CustomerDto clientDto){
 
-        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(iClientService.create(convertDtoToEntity(clientDto)).getId()).toUri();
+       
         
         AWSSNSController sns = new AWSSNSController();
         sns.addSubscriptionToSNSTopic(clientDto.getEmail());
@@ -60,8 +64,7 @@ public class CustomerController {
                 .path("/{id}")
                 .buildAndExpand(customerService.create(convertDtoToEntity(clientDto)).getId()).toUri();
 
-        
-
+      
         return ResponseEntity.created(uri).build();
     }
 
