@@ -6,8 +6,6 @@ import ibm.grupo2.helloBank.Models.Log;
 import ibm.grupo2.helloBank.Repositories.LogRepository;
 import ibm.grupo2.helloBank.service.LogService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -34,7 +32,6 @@ public class LogServiceImpl implements LogService {
     public Log save(Log log) {
         return logRepository.save(log);
     }
-
 
     @Override
     public List<Log> findBetweenDates(String number, Date date1, Date date2) {

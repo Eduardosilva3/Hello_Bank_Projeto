@@ -10,6 +10,7 @@ public interface CustomerService {
     List<Optional<Customer>> findByAllByName(String name);
 
     Optional<Customer> findById(Long id);
+    Customer findByName(String name);
     List<Customer> findAll();
     Customer create(Customer customer);
     Customer update(Long id, CustomerDto CustomerDto);
