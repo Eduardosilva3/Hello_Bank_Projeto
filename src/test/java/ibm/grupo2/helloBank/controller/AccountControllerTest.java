@@ -37,6 +37,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
+//@ActiveProfiles("test")
 public class AccountControllerTest {
 
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
@@ -49,10 +50,11 @@ public class AccountControllerTest {
     private final double BALANCE = 100.00;
     private final LocalDateTime CREATED_AT = LocalDateTime.parse("2000-01-01 12:30", formatter);
     private final LocalDateTime UPDATED_AT = LocalDateTime.parse("2000-01-05 12:00", formatter);
+    private final Boolean CARD = true;
 
 
     private final Customer CUSTOMER = new Customer(1000L,"Ryan","00000000","test@email.com"
-            ,99,"99999999", "a1a2a3", CREATED_AT, UPDATED_AT);
+            ,99,"99999999", "a1a2a3", CREATED_AT, UPDATED_AT, CARD );
 
 
 
@@ -70,7 +72,7 @@ public class AccountControllerTest {
         System.out.println( jsonPath("$.data").toString() );
 
         mvc.perform(MockMvcRequestBuilders.post("/account").
-                        content(getJsonPayload(ID,AG,NUMBER,TYPE,BALANCE,ACTIVE,CREATED_AT,UPDATED_AT))
+                        content(getJsonPayload(ID,AG,NUMBER,TYPE,BALANCE,ACTIVE,CREATED_AT,UPDATED_AT,CARD))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated())
@@ -102,10 +104,10 @@ public class AccountControllerTest {
     public String getJsonPayload(Long id,
                                  String ag, String number, String type,
                                  double balance, boolean active, LocalDateTime created_at,
-                                 LocalDateTime updated_at) throws JsonProcessingException {
+                                 LocalDateTime updated_at, Boolean card) throws JsonProcessingException {
 
         AccountDto accountDto = new AccountDto(id, ag, number,type, balance, active, CUSTOMER,
-                created_at, updated_at);
+                created_at, updated_at,CARD);
          ObjectMapper mapper = new ObjectMapper();
         mapper.registerModule(new JavaTimeModule());
         mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);

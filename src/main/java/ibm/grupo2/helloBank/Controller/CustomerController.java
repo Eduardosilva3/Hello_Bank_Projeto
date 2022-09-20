@@ -95,6 +95,7 @@ public class CustomerController {
         dto.setPassword(c.getPassword());
         dto.setCreated_at(c.getCreated_at());
         dto.setUpdated_at(c.getUpdated_at());
+        dto.setCard(c.isCard());
 
         return dto;
     }
@@ -108,6 +109,7 @@ public class CustomerController {
         c.setPassword(dto.getPassword());
         c.setCreated_at(dto.getCreated_at());
         c.setUpdated_at(dto.getUpdated_at());
+        c.setCard(dto.isCard());
 
         return c;
     }

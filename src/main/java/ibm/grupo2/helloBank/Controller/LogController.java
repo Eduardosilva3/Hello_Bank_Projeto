@@ -42,4 +42,11 @@ public class LogController {
         response.setData(logs);
         return ResponseEntity.ok().body(response);
     }
+
+    @GetMapping(value = "/log")
+    public ResponseEntity<List<Log>> findAll() {
+        List<Log> logs = logService.findAll();
+
+        return ResponseEntity.ok().body(logs);
+    }
 }

@@ -41,4 +41,9 @@ public class LogServiceImpl implements LogService {
                 return logRepository.findAllByOriginAndDateGreaterThanEqualAndDateLessThanEqual(number,date1,date2);
     }
 
+    @Override
+    public List<Log> findAll() {
+        return logRepository.findAll();
+    }
+
 }

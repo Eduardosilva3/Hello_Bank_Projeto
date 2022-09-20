@@ -29,7 +29,7 @@ public class AWSSNSController {
 
   private final static String TOPIC_ARN = "arn:aws:sns:us-east-1:296961575577:HelloBank";
 
- 
+
 
     public AmazonSNSClient amazonSNSClient;
 
@@ -38,37 +38,37 @@ public class AWSSNSController {
    * Metodo para casdatrar email do cliente na aws
    * @param email recebe o email do cliente
    * @return retorna mensagem confirmando o envio do email
-   * 
+   *
    */
-  
-  
+
+
   public void addSubscriptionToSNSTopic(String email) {
     AmazonSNSClient amazonSNSc = new AmazonSNSClient();
-    
+
     SubscribeRequest subscribeRequest = new SubscribeRequest("arn:aws:sns:us-east-1:296961575577:HelloBank", "email", email);
     amazonSNSc.subscribe(subscribeRequest);
     //return "Subscription request is pending. To confirm the subscription please check your email :"
       //  + email;
   }
-  
-  
+
+
 
   /**
    * Metodo para casdatrar email do cliente na aws
    * @param message recebe a mensagem que deseja enviar ao cliente
    * @param phoneNumber Recebe o numero do cliente
    * @return retorna mensagem confirmando o envio do sms
-   * 
+   *
    */
-  
+
   public String pubTextSMS(String message, String phoneNumber) {
     AmazonSNSClient amazonSNSc = new AmazonSNSClient();
-	  
+
 	  try {
           PublishRequest request = new PublishRequest();
           request.setMessage(message);
           request.setPhoneNumber(phoneNumber);
-          
+
 
           PublishResult result = amazonSNSc.publish(request);
           return result.getMessageId() + " Message sent. Status was " + result.getSdkResponseMetadata();
@@ -79,26 +79,26 @@ public class AWSSNSController {
           return "erro";
       }
   }
-  
+
   /**
-   * Metodo para cadastrar numero do cliente 
+   * Metodo para cadastrar numero do cliente
    * @param topicArn recebe o Arn da aws para o qual o numero será cadastrado
    * @param phoneNumber Recebe o numero do cliente para ser cadastrado
    * @return retorna mensagem confirmando o cadastro do numero
-   * 
+   *
    */
-  
+
   public void subTextSNS(String phoneNumber) {
     AmazonSNSClient amazonSNSc = new AmazonSNSClient();
-	  
+
       try {
           SubscribeRequest request = new SubscribeRequest();
               request.setProtocol("sms");
               request.setEndpoint(phoneNumber);
               request.setReturnSubscriptionArn(true);
               request.setTopicArn(TOPIC_ARN);
-        		  
-        		 
+
+
           SubscribeResult result = amazonSNSc.subscribe(request);
          // System.out.println("Subscription ARN: " + result.getSubscriptionArn() + "\n\n Status is " + result.getSdkHttpMetadata());
          //return "Celular cadastrado com sucesso" + result.getSubscriptionArn();
