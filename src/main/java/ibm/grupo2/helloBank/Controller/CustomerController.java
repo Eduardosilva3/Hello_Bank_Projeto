@@ -3,13 +3,13 @@ package ibm.grupo2.helloBank.Controller;
 
 import ibm.grupo2.helloBank.Models.Customer;
 import ibm.grupo2.helloBank.dto.CustomerDto;
+import ibm.grupo2.helloBank.dto.LoginDto;
 import ibm.grupo2.helloBank.service.CustomerService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
@@ -25,21 +25,34 @@ import java.util.*;
 @Log4j2
 public class CustomerController {
 
-    @Autowired
-    CustomerService iClientService;
 
-    @Autowired
-    private ModelMapper modelMapper;
+    private final CustomerService customerService;
+    private final PasswordEncoder passwordEncoder;
 
+    @PostMapping("/login")
+    public ResponseEntity<Object> login(@RequestBody LoginDto dataLogin){
+        boolean valid = false;
+        Customer customer = customerService.findByName(dataLogin.getName());
+
+        valid = passwordEncoder.matches(dataLogin.getPassword(), customer.getPassword());
+
+        if (!valid) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+
+        return ResponseEntity.ok().body(customer);
+    }
 
     @GetMapping
     public ResponseEntity<List<Customer>> findAll(){
-        return ResponseEntity.ok().body(iClientService.findAll());
+        return ResponseEntity.ok().body(customerService.findAll());
     }
 
     @PostMapping
     public ResponseEntity<CustomerDto> create(@RequestBody @Valid CustomerDto clientDto){
-        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(iClientService.create(convertDtoToEntity(clientDto)).getId()).toUri();
+        URI uri = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(customerService.create(convertDtoToEntity(clientDto)).getId()).toUri();
+
         String email = "teste@teste.com";
         AWSSNSController.addSubscriptionToSNSTopic(email);
         AWSSNSController.subTextSNS(clientDto.getPhone());
@@ -48,7 +61,7 @@ public class CustomerController {
 
     @GetMapping("/{id}")
     public ResponseEntity<CustomerDto> create(@PathVariable Long id){
-        Optional<Customer> client = iClientService.findById(id);
+        Optional<Customer> client = customerService.findById(id);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(client.get().getId()).toUri();
 
 
@@ -57,18 +70,18 @@ public class CustomerController {
 
     @PutMapping("/{id}")
     public ResponseEntity<CustomerDto> update(@PathVariable Long id, @RequestBody @Valid CustomerDto clientDto){
-        return ResponseEntity.ok().body(convertEntityToDto(iClientService.update(id, clientDto)));
+        return ResponseEntity.ok().body(convertEntityToDto(customerService.update(id, clientDto)));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id){
-        iClientService.delete(id);
+        customerService.delete(id);
         return ResponseEntity.noContent().build();
     }
     @GetMapping("/cpf")
     public ResponseEntity<Customer> findByCpf(@RequestBody @Valid CustomerDto clientDto){
         convertDtoToEntity(clientDto);
-        return ResponseEntity.ok().body(iClientService.findByCpf(clientDto.getCpf()));
+        return ResponseEntity.ok().body(customerService.findByCpf(clientDto.getCpf()));
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
@@ -104,7 +117,7 @@ public class CustomerController {
         c.setEmail(dto.getEmail());
         c.setAge(dto.getAge());
         c.setPhone(dto.getPhone());
-        c.setPassword(dto.getPassword());
+        c.setPassword(passwordEncoder.encode(dto.getPassword()));
         c.setCreated_at(dto.getCreated_at());
         c.setUpdated_at(dto.getUpdated_at());
 
