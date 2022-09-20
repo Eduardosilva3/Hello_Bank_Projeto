@@ -60,9 +60,7 @@ public class CustomerController {
                 .path("/{id}")
                 .buildAndExpand(customerService.create(convertDtoToEntity(clientDto)).getId()).toUri();
 
-        String email = "teste@teste.com";
-        AWSSNSController.addSubscriptionToSNSTopic(email);
-        AWSSNSController.subTextSNS(clientDto.getPhone());
+        
 
         return ResponseEntity.created(uri).build();
     }
