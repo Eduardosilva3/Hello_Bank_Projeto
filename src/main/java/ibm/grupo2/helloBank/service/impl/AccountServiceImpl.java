@@ -145,7 +145,7 @@ public class AccountServiceImpl implements AccountService {
                 value = value*-1;
             }
             Optional<Account> acc1 = accountRepository.findByNumber(origin);
-            acc1.get().setBalance(acc1.get().getBalance() - value);
+            acc1.get().setBalance(acc1.get().getBalance() + value);
             acc1.get().setUpdated_at(LocalDateTime.now());
             accountRepository.deleteById(acc1.get().getId());
             return accountRepository.save(acc1.get());
