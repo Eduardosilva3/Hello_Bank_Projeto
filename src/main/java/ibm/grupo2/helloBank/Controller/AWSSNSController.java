@@ -8,6 +8,8 @@ import com.amazonaws.services.sns.model.PublishResult;
 import com.amazonaws.services.sns.model.SubscribeRequest;
 import com.amazonaws.services.sns.model.SubscribeResult;
 
+import ibm.grupo2.helloBank.Config.AWSSNSConfig;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,50 +24,53 @@ import org.springframework.web.bind.annotation.RestController;
  * @author Eduardo Silva
  * @since 15/09/2022
  */
-@RestController
+
 public class AWSSNSController {
 
   private final static String TOPIC_ARN = "arn:aws:sns:us-east-1:296961575577:HelloBank";
 
-  @Autowired
-static
-  AmazonSNSClient amazonSNSClient;
+
+
+    public AmazonSNSClient amazonSNSClient;
 
 
   /**
    * Metodo para casdatrar email do cliente na aws
    * @param email recebe o email do cliente
    * @return retorna mensagem confirmando o envio do email
-   * 
+   *
    */
-  
-  public static void addSubscriptionToSNSTopic(String email) {
-    SubscribeRequest subscribeRequest = new SubscribeRequest(TOPIC_ARN, "email", email);
-    amazonSNSClient.subscribe(subscribeRequest);
+
+
+  public void addSubscriptionToSNSTopic(String email) {
+    AmazonSNSClient amazonSNSc = new AmazonSNSClient();
+
+    SubscribeRequest subscribeRequest = new SubscribeRequest("arn:aws:sns:us-east-1:296961575577:HelloBank", "email", email);
+    amazonSNSc.subscribe(subscribeRequest);
     //return "Subscription request is pending. To confirm the subscription please check your email :"
       //  + email;
   }
-  
-  
+
+
 
   /**
    * Metodo para casdatrar email do cliente na aws
    * @param message recebe a mensagem que deseja enviar ao cliente
    * @param phoneNumber Recebe o numero do cliente
    * @return retorna mensagem confirmando o envio do sms
-   * 
+   *
    */
-  
+
   public String pubTextSMS(String message, String phoneNumber) {
-      
-	  
+    AmazonSNSClient amazonSNSc = new AmazonSNSClient();
+
 	  try {
           PublishRequest request = new PublishRequest();
           request.setMessage(message);
           request.setPhoneNumber(phoneNumber);
-          
 
-          PublishResult result = amazonSNSClient.publish(request);
+
+          PublishResult result = amazonSNSc.publish(request);
           return result.getMessageId() + " Message sent. Status was " + result.getSdkResponseMetadata();
 
       } catch (AmazonSNSException e) {
@@ -74,27 +79,27 @@ static
           return "erro";
       }
   }
-  
+
   /**
-   * Metodo para cadastrar numero do cliente 
+   * Metodo para cadastrar numero do cliente
    * @param topicArn recebe o Arn da aws para o qual o numero será cadastrado
    * @param phoneNumber Recebe o numero do cliente para ser cadastrado
    * @return retorna mensagem confirmando o cadastro do numero
-   * 
+   *
    */
-  
-  public static void subTextSNS(String phoneNumber) {
-	
-	  
+
+  public void subTextSNS(String phoneNumber) {
+    AmazonSNSClient amazonSNSc = new AmazonSNSClient();
+
       try {
           SubscribeRequest request = new SubscribeRequest();
               request.setProtocol("sms");
               request.setEndpoint(phoneNumber);
               request.setReturnSubscriptionArn(true);
               request.setTopicArn(TOPIC_ARN);
-        		  
-        		 
-          SubscribeResult result = amazonSNSClient.subscribe(request);
+
+
+          SubscribeResult result = amazonSNSc.subscribe(request);
          // System.out.println("Subscription ARN: " + result.getSubscriptionArn() + "\n\n Status is " + result.getSdkHttpMetadata());
          //return "Celular cadastrado com sucesso" + result.getSubscriptionArn();
 

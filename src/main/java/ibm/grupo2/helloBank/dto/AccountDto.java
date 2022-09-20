@@ -42,5 +42,7 @@ public class AccountDto {
 
     LocalDateTime updated_at;
 
+    public AccountDto(Long id, String ag, String number, String type, double balance, boolean active, Customer customer, LocalDateTime created_at, LocalDateTime updated_at, Boolean card) {
+    }
 }
 

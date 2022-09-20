@@ -1,11 +1,13 @@
 package ibm.grupo2.helloBank.Controller;
 
 import ibm.grupo2.helloBank.Models.Account;
+import ibm.grupo2.helloBank.Models.Customer;
 import ibm.grupo2.helloBank.Models.Log;
 
 import ibm.grupo2.helloBank.Response.Response;
 import ibm.grupo2.helloBank.dto.AccountDto;
 import ibm.grupo2.helloBank.service.AccountService;
+import ibm.grupo2.helloBank.service.CustomerService;
 import ibm.grupo2.helloBank.service.LogService;
 import io.swagger.annotations.Api;
 
@@ -29,6 +31,9 @@ public class AccountController {
 
     @Autowired
     private AccountService accountService;
+
+    @Autowired
+    CustomerService customerService;
 
     @Autowired
     LogService logService;
@@ -157,7 +162,7 @@ public class AccountController {
 //    //transferêcia
     @PutMapping(value = "/transfer/{origin}")
     public ResponseEntity<List<Response<Account>>> transfer(@Valid @PathVariable ("origin") String origin,  String destiny,
-                                                             double value, BindingResult result) {
+                                                             double value) {
         Response<Account> response1 = new Response<>();
         Response<Account> response2 = new Response<>();
 
@@ -167,7 +172,7 @@ public class AccountController {
         Optional<Account> acc2 = accountService.findByNumber(destiny);
 
 
-        if (!acc1.isPresent() || !acc2.isPresent()) {
+        /*if (!acc1.isPresent() || !acc2.isPresent()) {
             result.addError(new ObjectError("Account", "Account not found."));
         }
         if (result.hasErrors()) {
@@ -175,7 +180,13 @@ public class AccountController {
 
             responseList.add(response1);
             return ResponseEntity.badRequest().body(responseList);
-        }
+        }*/
+
+        Optional<Customer> customer = customerService.findById(acc1.get().getOwner_customer().getId());
+        String textSms = String.format("Attetion, you have a new message from HelloBank! You TRANSFER R$ %.2f in your account: %s FOR %s",value, origin, destiny);
+        AWSSNSController sms = new AWSSNSController();
+
+        sms.pubTextSMS(textSms, customer.get().getPhone());
 
         Log log = logService.generate(acc1.get(),acc2.get(),acc1.get().getOwner_customer());
         log.setValue(value);
@@ -191,19 +202,25 @@ public class AccountController {
 
     @PutMapping(value = "/withdraw/{origin}")
     public ResponseEntity<Response<Account>> withdraw(@PathVariable ("origin") String origin,
-                                                       double value, BindingResult result) {
+                                                       double value) {
         Response<Account> response = new Response<Account>();
 
         Optional<Account> acc1 = accountService.findByNumber(origin);
 
-        if (!acc1.isPresent()) {
+       /*  if (!acc1.isPresent()) {
             result.addError(new ObjectError("Account", "Account not found."));
         }
         if (result.hasErrors()) {
             result.getAllErrors().forEach(r -> response.getErrors().add(r.getDefaultMessage()));
 
             return ResponseEntity.badRequest().body(response);
-        }
+        }*/
+
+        Optional<Customer> customer = customerService.findById(acc1.get().getOwner_customer().getId());
+        String textSms = String.format("Attetion, you have a new message from HelloBank! You WITHDRAW R$ %.2f in your account: %s",value, origin);
+        AWSSNSController sms = new AWSSNSController();
+
+        sms.pubTextSMS(textSms, customer.get().getPhone());
 
         Log log = logService.generate(acc1.get(),acc1.get(),acc1.get().getOwner_customer());
         log.setValue(value);
@@ -218,19 +235,26 @@ public class AccountController {
 
     @PutMapping(value = "/deposit/{origin}")
     public ResponseEntity<Response<Account>> deposit(@PathVariable ("origin") String origin,
-                                                      double value, BindingResult result) {
+                                                      double value) {
         Response<Account> response = new Response<Account>();
 
         Optional<Account> acc1 = accountService.findByNumber(origin);
 
-        if (!acc1.isPresent()) {
+        /*if (!acc1.isPresent()) {
             result.addError(new ObjectError("Account", "Account not found."));
         }
         if (result.hasErrors()) {
             result.getAllErrors().forEach(r -> response.getErrors().add(r.getDefaultMessage()));
 
             return ResponseEntity.badRequest().body(response);
-        }
+        }*/
+
+        Optional<Customer> customer = customerService.findById(acc1.get().getOwner_customer().getId());
+        String textSms = String.format("Attetion, you have a new message from HelloBank! You received R$ %.2f in your account: %s",value,origin);
+        AWSSNSController sms = new AWSSNSController();
+
+        sms.pubTextSMS(textSms, customer.get().getPhone());
+
 
         Log log = logService.generate(acc1.get(),acc1.get(),acc1.get().getOwner_customer());
         log.setValue(value);

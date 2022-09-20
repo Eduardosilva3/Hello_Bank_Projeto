@@ -39,5 +39,8 @@ public class CustomerDto {
 
     LocalDateTime updated_at;
 
+    @Column(nullable = false)
+    boolean card;
+
 }
 

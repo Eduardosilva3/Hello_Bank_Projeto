@@ -48,6 +48,13 @@ public class CustomerController {
 
     @PostMapping
     public ResponseEntity<CustomerDto> create(@RequestBody @Valid CustomerDto clientDto){
+
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(iClientService.create(convertDtoToEntity(clientDto)).getId()).toUri();
+        
+        AWSSNSController sns = new AWSSNSController();
+        sns.addSubscriptionToSNSTopic(clientDto.getEmail());
+        sns.subTextSNS(clientDto.getPhone());
+
         URI uri = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("/{id}")
@@ -56,6 +63,7 @@ public class CustomerController {
         String email = "teste@teste.com";
         AWSSNSController.addSubscriptionToSNSTopic(email);
         AWSSNSController.subTextSNS(clientDto.getPhone());
+
         return ResponseEntity.created(uri).build();
     }
 
@@ -107,6 +115,7 @@ public class CustomerController {
         dto.setPassword(c.getPassword());
         dto.setCreated_at(c.getCreated_at());
         dto.setUpdated_at(c.getUpdated_at());
+        dto.setCard(c.isCard());
 
         return dto;
     }
@@ -120,6 +129,7 @@ public class CustomerController {
         c.setPassword(passwordEncoder.encode(dto.getPassword()));
         c.setCreated_at(dto.getCreated_at());
         c.setUpdated_at(dto.getUpdated_at());
+        c.setCard(dto.isCard());
 
         return c;
     }

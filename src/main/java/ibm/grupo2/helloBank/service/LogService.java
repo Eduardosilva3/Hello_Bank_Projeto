@@ -15,4 +15,6 @@ public interface LogService {
 
 //
     List<Log> findBetweenDates(String number, Date date1, Date date2);
+
+    List<Log> findAll();
 }

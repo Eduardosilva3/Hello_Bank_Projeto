@@ -108,7 +108,8 @@ public class AccountServiceImpl implements AccountService {
 
                 accountRepository.deleteById(acc1.get().getId());
                 accountRepository.deleteById(acc2.get().getId());
-                return (Account) accountRepository.saveAll(Arrays.asList(acc1.get(), acc2.get()));
+                accountRepository.save(acc1.get());
+                return accountRepository.save(acc2.get());
             } else {
                 throw new UnsufficientBalanceException("There's no balance to do this transfer");
             }
@@ -145,7 +146,7 @@ public class AccountServiceImpl implements AccountService {
                 value = value*-1;
             }
             Optional<Account> acc1 = accountRepository.findByNumber(origin);
-            acc1.get().setBalance(acc1.get().getBalance() - value);
+            acc1.get().setBalance(acc1.get().getBalance() + value);
             acc1.get().setUpdated_at(LocalDateTime.now());
             accountRepository.deleteById(acc1.get().getId());
             return accountRepository.save(acc1.get());

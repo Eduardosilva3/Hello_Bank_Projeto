@@ -31,7 +31,7 @@ public class AccountRepositoryTest {
         LocalDateTime dt2 = LocalDateTime.now().plusMonths(5);
         var id = 1l;
         Customer c1 = new Customer(id,"Billy","123456789", "Billy@test.com",
-                50,"90909090","Hadouken", dt1,dt2);
+                50,"90909090","Hadouken", dt1,dt2,Boolean.TRUE);
         customerRepository.save(c1);
 
         System.out.println("Before Each");
@@ -76,7 +76,8 @@ public class AccountRepositoryTest {
         LocalDateTime dt2 = LocalDateTime.now().plusMonths(5);
         var id = 3l;
         Customer c2 =
-        customerRepository.save(new Customer(id,"Arnold","99999999", "ArnoldTest@test.com", 35,"9999999","Hadouken", dt1,dt2));
+        customerRepository.save(new Customer(id,"Arnold","99999999", "ArnoldTest@test.com",
+                35,"9999999","Hadouken", dt1,dt2,Boolean.TRUE));
 
         Account acc = new Account();
         acc.setId(id);
