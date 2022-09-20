@@ -250,7 +250,7 @@ public class AccountController {
         }*/
 
         Optional<Customer> customer = customerService.findById(acc1.get().getOwner_customer().getId());
-        String textSms = String.format("Attetion, you have a new message from HelloBank! You received R$ %.2f in your account: %s",value,origin);
+        String textSms = String.format("Attetion, you have a new message from HelloBank! You received R$ %f in your account: %s",value,origin);
         AWSSNSController sms = new AWSSNSController();
 
         sms.pubTextSMS(textSms, customer.get().getPhone());
