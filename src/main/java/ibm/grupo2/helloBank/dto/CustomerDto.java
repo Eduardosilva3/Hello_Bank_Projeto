@@ -42,5 +42,6 @@ public class CustomerDto {
     @Column(nullable = false)
     boolean card;
 
+    
 }
 

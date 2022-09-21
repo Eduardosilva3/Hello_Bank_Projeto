@@ -5,6 +5,7 @@ import ibm.grupo2.helloBank.Models.Customer;
 import ibm.grupo2.helloBank.dto.CustomerDto;
 import ibm.grupo2.helloBank.dto.LoginDto;
 import ibm.grupo2.helloBank.service.CustomerService;
+import ibm.grupo2.helloBank.service.Lambda;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 
@@ -18,6 +19,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
+
+import java.io.IOException;
 import java.net.URI;
 import java.util.*;
 
@@ -51,13 +54,18 @@ public class CustomerController {
     }
 
     @PostMapping
-    public ResponseEntity<CustomerDto> create(@RequestBody @Valid CustomerDto clientDto){
+    public ResponseEntity<CustomerDto> create(@RequestBody @Valid CustomerDto clientDto) throws IOException{
 
        
         
         AWSSNSController sns = new AWSSNSController();
         sns.addSubscriptionToSNSTopic(clientDto.getEmail());
         sns.subTextSNS(clientDto.getPhone());
+
+
+        if(clientDto.isCard()){
+            Lambda.buscarLambda(clientDto.getName(), clientDto.getCpf());
+        }
 
         URI uri = ServletUriComponentsBuilder
                 .fromCurrentRequest()

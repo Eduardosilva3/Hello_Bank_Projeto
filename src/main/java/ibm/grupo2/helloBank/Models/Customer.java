@@ -63,4 +63,6 @@ public class Customer implements Serializable {
     this.card= card;
   }
 
+  
+
 }
