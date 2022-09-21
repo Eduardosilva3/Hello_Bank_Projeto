@@ -9,7 +9,7 @@ import java.net.URL;
 public class Lambda {
     public static void buscarLambda(String nome, String cpf) throws IOException {
 		String url = String.format("https://yjxpopc5q3.execute-api.us-east-1.amazonaws.com/default/analise?nome=%s&cpf=%s", nome, cpf);
-		String url1 = "https://yjxpopc5q3.execute-api.us-east-1.amazonaws.com/default";
+		String url1 =  String.format("https://yjxpopc5q3.execute-api.us-east-1.amazonaws.com/default/analise?nome=%s&cpf=%s", nome, cpf);
 		HttpURLConnection conn1 = (HttpURLConnection) new URL(url1).openConnection();
 		conn1.setRequestMethod("GET");
 		conn1.setRequestProperty("Accept", "application/json");
