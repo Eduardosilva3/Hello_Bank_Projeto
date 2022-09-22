@@ -90,6 +90,10 @@ git clone https://github.com/fvilelagit/projeto-final-IBM-G2
   http://18.212.212.100:8085/swagger-ui.html
 
   ```
+  ```
+  http://hellobankgrupo2-env.eba-uedm2sfc.us-east-1.elasticbeanstalk.com/swagger-ui.html
+
+  ```
   
   ![sw1](https://user-images.githubusercontent.com/47660967/191620505-a71665f5-20d2-4cab-86a9-f41fa71123b3.png)
   
